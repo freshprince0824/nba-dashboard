@@ -1,29 +1,118 @@
 "use client";
 
+import { useState, useEffect } from "react";
+import { Search, Bell, User, Settings, X } from "lucide-react";
+
 export default function Header() {
+  const [searchQuery, setSearchQuery] = useState("");
+  const [isSearchFocused, setIsSearchFocused] = useState(false);
+  const [greeting, setGreeting] = useState("");
+  const [userName, setUserName] = useState("user"); // Change this to your name
+
+  // Time-based greeting
+  useEffect(() => {
+    const hour = new Date().getHours();
+    let text = "";
+    
+    // Customize these messages however you want
+    if (hour >= 5 && hour < 12) {
+      text = "good morning";           // 5 AM - 11:59 AM
+    } else if (hour >= 12 && hour < 17) {
+      text = "good afternoon";         // 12 PM - 4:59 PM
+    } else if (hour >= 17 && hour < 22) {
+      text = "good evening";           // 5 PM - 9:59 PM
+    } else {
+      text = "goodnight";             // 10 PM - 4:59 AM
+    }
+    
+    setGreeting(text);
+  }, []);
+
+  const searchSuggestions = [
+    { type: "team", name: "Boston Celtics", icon: "☘️" },
+    { type: "team", name: "Oklahoma City Thunder", icon: "🌩️" },
+    { type: "player", name: "Nikola Jokic", icon: "⛏️" },
+    { type: "player", name: "Luka Doncic", icon: "🪄" },
+    { type: "game", name: "Thunder @ Spurs", icon: "🏀" },
+    { type: "game", name: "Celtics @ Pacers", icon: "🏀" },
+  ];
+
+  const filteredSuggestions = searchQuery.length > 0
+    ? searchSuggestions.filter(item => 
+        item.name.toLowerCase().includes(searchQuery.toLowerCase())
+      )
+    : [];
+
   return (
     <header className="bg-zinc-950 border-b border-zinc-800 py-4">
-      <div className="w-full px-6 flex justify-end items-center">
-        <nav className="flex gap-6 text-sm items-center">
-          <a href="/notifications" className="text-white hover:text-zinc-300 transition-colors" title="notifications">
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/>
-              <path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/>
-            </svg>
-          </a>
-          <a href="/user" className="text-white hover:text-zinc-300 transition-colors" title="user profile">
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/>
-              <circle cx="12" cy="7" r="4"/>
-            </svg>
-          </a>
-          <a href="/settings" className="text-white hover:text-zinc-300 transition-colors" title="settings">
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/>
-              <circle cx="12" cy="12" r="3"/>
-            </svg>
-          </a>
-        </nav>
+      <div className="w-full px-6 flex items-center justify-between">
+        {/* Left: Greeting */}
+        <div className="flex items-center gap-3">
+          <h1 className="text-lg font-semibold text-white capitalize">
+            {greeting}, <span className="text-emerald-400">{userName}</span>
+          </h1>
+          
+        </div>
+
+        {/* Right: Search + Icons */}
+        <div className="flex items-center gap-4">
+          {/* Search Bar */}
+          <div className="relative w-64">
+            <div className={`flex items-center gap-3 bg-zinc-900 border rounded-xl px-4 py-2.5 transition-all duration-200 ${
+              isSearchFocused ? "border-emerald-500/50 shadow-sm shadow-emerald-500/10" : "border-zinc-800"
+            }`}>
+              <Search size={16} className="text-zinc-500" />
+              <input
+                type="text"
+                placeholder="Search teams, players, games..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                onFocus={() => setIsSearchFocused(true)}
+                onBlur={() => setTimeout(() => setIsSearchFocused(false), 200)}
+                className="bg-transparent text-sm text-white placeholder-zinc-500 focus:outline-none w-full"
+              />
+              {searchQuery && (
+                <button 
+                  onClick={() => setSearchQuery("")}
+                  className="text-zinc-500 hover:text-white"
+                >
+                  <X size={14} />
+                </button>
+              )}
+            </div>
+
+            {/* Search Dropdown */}
+            {isSearchFocused && filteredSuggestions.length > 0 && (
+              <div className="absolute top-full right-0 mt-2 w-72 bg-zinc-900 border border-zinc-800 rounded-xl overflow-hidden shadow-xl z-50">
+                {filteredSuggestions.map((item, i) => (
+                  <button
+                    key={i}
+                    className="w-full flex items-center gap-3 px-4 py-3 hover:bg-zinc-800 transition-colors text-left"
+                  >
+                    <span className="text-lg">{item.icon}</span>
+                    <div>
+                      <p className="text-sm text-white">{item.name}</p>
+                      <p className="text-xs text-zinc-500 capitalize">{item.type}</p>
+                    </div>
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
+
+          {/* Icons */}
+          <nav className="flex gap-2 text-sm items-center">
+            <button className="p-2.5 rounded-xl hover:bg-zinc-800 transition-colors text-zinc-400 hover:text-white" title="notifications">
+              <Bell size={18} />
+            </button>
+            <button className="p-2.5 rounded-xl hover:bg-zinc-800 transition-colors text-zinc-400 hover:text-white" title="user profile">
+              <User size={18} />
+            </button>
+            <button className="p-2.5 rounded-xl hover:bg-zinc-800 transition-colors text-zinc-400 hover:text-white" title="settings">
+              <Settings size={18} />
+            </button>
+          </nav>
+        </div>
       </div>
     </header>
   );

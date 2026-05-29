@@ -1,10 +1,11 @@
 "use client";
 
 import { useState } from "react";
+import { Send } from "lucide-react";
 
 export default function AIChat() {
   const [messages, setMessages] = useState([
-    { role: "ai", text: "hey! i analyzed 12 games today. found 3 strong edges. what can i help you with?" }
+    { role: "ai", text: "Hey! I analyzed 12 games today. Found 3 strong edges. What can I help you with?" }
   ]);
   const [input, setInput] = useState("");
 
@@ -13,7 +14,7 @@ export default function AIChat() {
     setMessages([...messages, { role: "user", text: input }]);
     setInput("");
     setTimeout(() => {
-      setMessages(prev => [...prev, { role: "ai", text: "analyzing your pick... this looks +ev based on recent trends." }]);
+      setMessages(prev => [...prev, { role: "ai", text: "Analyzing your pick... This looks +EV based on recent trends." }]);
     }, 1000);
   };
 
@@ -36,14 +37,15 @@ export default function AIChat() {
           value={input}
           onChange={(e) => setInput(e.target.value)}
           onKeyPress={(e) => e.key === "Enter" && sendMessage()}
-          placeholder="ask anything..."
+          placeholder="Ask anything..."
           className="flex-1 bg-zinc-800 border border-zinc-700 rounded-lg px-4 py-2 text-sm text-white placeholder-zinc-500 focus:outline-none focus:border-emerald-500"
         />
         <button
           onClick={sendMessage}
-          className="bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg px-4 py-2 text-sm font-medium transition-colors"
+          className="bg-emerald-500 hover:bg-emerald-400 text-black rounded-lg p-2.5 transition-colors flex items-center justify-center"
+          title="Send"
         >
-          send
+          <Send size={18} />
         </button>
       </div>
     </div>

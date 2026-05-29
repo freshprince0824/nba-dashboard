@@ -3,6 +3,7 @@ import LineGraph from "./components/LineGraph";
 import AIChat from "./components/AIChat";
 import Insights from "./components/Insights";
 import Header from "./sections/Header";
+import GamesSection from "./components/GamesSection";
 
 async function getGames() {
   try {
@@ -53,7 +54,9 @@ export default async function Home() {
           </div>
           
           {/* 4 Big Cards - Left column wider, right column thinner */}
-<div className="grid grid-cols-[7fr_3fr] grid-rows-2 gap-4 flex-1 min-h-0">            {/* Units Chart - Top Left (wider) */}
+          <div className="grid grid-cols-[7fr_3fr] grid-rows-2 gap-4 flex-1 min-h-0">
+            
+            {/* Units Chart - Top Left (wider) */}
             <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-4 flex flex-col overflow-hidden">
               <div className="flex justify-between items-center mb-2">
                 <h3 className="text-xs font-semibold text-zinc-400 uppercase tracking-wider">units</h3>
@@ -73,25 +76,8 @@ export default async function Home() {
               <Insights />
             </div>
             
-            {/* Games Today - Bottom Left (wider) */}
-            <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-4 flex flex-col overflow-hidden">
-              <div className="flex justify-between items-center mb-2">
-                <h3 className="text-xs font-semibold text-zinc-400 uppercase tracking-wider">games today</h3>
-                <span className="text-[10px] text-zinc-600">{data.events?.length || 0} games</span>
-              </div>
-              <div className="flex-1 overflow-y-auto min-h-0 space-y-2">
-                {data.events?.length === 0 ? (
-                  <div className="text-center py-8">
-                    <p className="text-zinc-500 text-sm">no games found</p>
-                    <p className="text-zinc-600 text-xs">nba may be in offseason</p>
-                  </div>
-                ) : (
-                  data.events?.map((event: any) => (
-                    <GameCard key={event.id} game={event} />
-                  ))
-                )}
-              </div>
-            </div>
+            {/* Games Today - Bottom Left (wider) - NOW USING GamesSection */}
+            <GamesSection />
             
             {/* AI Assistant - Bottom Right (thinner) */}
             <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-4 flex flex-col overflow-hidden">
