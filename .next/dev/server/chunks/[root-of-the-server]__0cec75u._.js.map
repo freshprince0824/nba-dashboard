@@ -1,6 +1,0 @@
-{
-  "version": 3,
-  "sources": [],
-  "sections": [
-    {"offset": {"line": 42, "column": 0}, "map": {"version":3,"sources":["file:///C:/Users/micha/nba-dashboard/src/app/api/games/route.ts"],"sourcesContent":["const res = await fetch(\r\n  \"https://api-nba.p.rapidapi.com/games?live=all\",\r\n  {\r\n    headers: {\r\n      \"X-RapidAPI-Key\": process.env.NBA_API_KEY!,\r\n      \"X-RapidAPI-Host\": \"api-nba.p.rapidapi.com\"\r\n    },\r\n    next: { revalidate: 60 }\r\n  }\r\n);"],"names":["res","fetch","headers","process","env","NBA_API_KEY","next","revalidate"],"mappings":"AAAA,MAAMA,MAAM,MAAMC,MAChB,iDACA;IACEC,SAAS;QACP,kBAAkBC,QAAQC,GAAG,CAACC,WAAW;QACzC,mBAAmB;IACrB;IACAC,MAAM;QAAEC,YAAY;IAAG;AACzB"}}]
-}
