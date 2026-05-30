@@ -50,39 +50,48 @@ __turbopack_context__.s([
 ]);
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$server$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/server.js [app-route] (ecmascript)");
 ;
+const ESPN_SPORTS = {
+    basketball_nba: "basketball/nba",
+    baseball_mlb: "baseball/mlb",
+    icehockey_nhl: "hockey/nhl"
+};
 async function GET(request) {
     const { searchParams } = new URL(request.url);
-    const sport = searchParams.get("sport") || "basketball_nba";
-    try {
-        const apiKey = process.env.ODDS_API_KEY;
-        if (!apiKey) {
-            return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$server$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["NextResponse"].json({
-                error: "No API key"
-            }, {
-                status: 500
-            });
-        }
-        const res = await fetch(`https://api.the-odds-api.com/v4/sports/${sport}/odds?apiKey=${apiKey}&regions=us&markets=h2h,spreads,totals&oddsFormat=american`, {
-            next: {
-                revalidate: 60
+    const sport = searchParams.get("sport");
+    const allGames = [];
+    const sportsToFetch = sport && ESPN_SPORTS[sport] ? [
+        [
+            sport,
+            ESPN_SPORTS[sport]
+        ]
+    ] : Object.entries(ESPN_SPORTS);
+    for (const [sportKey, espnPath] of sportsToFetch){
+        try {
+            const res = await fetch(`https://site.api.espn.com/apis/site/v2/sports/${espnPath}/scoreboard?limit=100`);
+            if (!res.ok) continue;
+            const data = await res.json();
+            // Show ALL events ESPN returns (no date filter)
+            for (const event of data.events || []){
+                const homeTeam = event.competitions[0]?.competitors?.find((c)=>c.homeAway === "home")?.team?.displayName;
+                const awayTeam = event.competitions[0]?.competitors?.find((c)=>c.homeAway === "away")?.team?.displayName;
+                allGames.push({
+                    id: event.id,
+                    sportKey: sportKey,
+                    home_team: homeTeam,
+                    away_team: awayTeam,
+                    commence_time: event.date,
+                    home_score: event.competitions[0]?.competitors?.find((c)=>c.homeAway === "home")?.score,
+                    away_score: event.competitions[0]?.competitors?.find((c)=>c.homeAway === "away")?.score,
+                    status: event.status?.type?.description,
+                    status_code: event.status?.type?.name,
+                    bookmakers: []
+                });
             }
-        });
-        if (!res.ok) {
-            return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$server$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["NextResponse"].json({
-                error: `API error: ${res.status}`
-            }, {
-                status: 500
-            });
+        } catch (err) {
+            console.error(`Failed to fetch ESPN ${sportKey}:`, err);
         }
-        const data = await res.json();
-        return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$server$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["NextResponse"].json(data);
-    } catch (err) {
-        return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$server$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["NextResponse"].json({
-            error: err.message
-        }, {
-            status: 500
-        });
     }
+    return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$server$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["NextResponse"].json(allGames);
 }
 }),
 ];

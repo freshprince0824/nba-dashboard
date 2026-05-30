@@ -76,8 +76,12 @@ export default async function Home() {
               <Insights />
             </div>
             
-            {/* Games Today - Bottom Left (wider) - NOW USING GamesSection */}
-            <GamesSection />
+            {/* Games Today - Bottom Left (wider) - WITH SCROLLING */}
+            <div className="bg-zinc-900 border border-zinc-800 rounded-xl flex flex-col overflow-hidden">
+              <div className="flex-1 min-h-0 overflow-y-auto">
+                <GamesSection />
+              </div>
+            </div>
             
             {/* AI Assistant - Bottom Right (thinner) */}
             <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-4 flex flex-col overflow-hidden">

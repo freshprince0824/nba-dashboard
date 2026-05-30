@@ -471,69 +471,128 @@ const TEAM_ABBREVIATIONS = {
     "Washington Commanders": "wsh",
     // MLB - 30 teams
     "Arizona Diamondbacks": "ari",
+    "Diamondbacks": "ari",
     "Atlanta Braves": "atl",
+    "Braves": "atl",
     "Baltimore Orioles": "bal",
+    "Orioles": "bal",
     "Boston Red Sox": "bos",
+    "Red Sox": "bos",
     "Chicago Cubs": "chc",
+    "Cubs": "chc",
     "Chicago White Sox": "cws",
+    "White Sox": "cws",
     "Cincinnati Reds": "cin",
+    "Reds": "cin",
     "Cleveland Guardians": "cle",
+    "Guardians": "cle",
     "Colorado Rockies": "col",
+    "Rockies": "col",
     "Detroit Tigers": "det",
+    "Tigers": "det",
     "Houston Astros": "hou",
+    "Astros": "hou",
     "Kansas City Royals": "kc",
+    "Royals": "kc",
     "Los Angeles Angels": "laa",
+    "Angels": "laa",
     "Los Angeles Dodgers": "lad",
+    "Dodgers": "lad",
     "Miami Marlins": "mia",
+    "Marlins": "mia",
     "Milwaukee Brewers": "mil",
+    "Brewers": "mil",
     "Minnesota Twins": "min",
+    "Twins": "min",
     "New York Mets": "nym",
+    "Mets": "nym",
     "New York Yankees": "nyy",
+    "Yankees": "nyy",
     "Oakland Athletics": "oak",
+    "Athletics": "oak",
     "Philadelphia Phillies": "phi",
+    "Phillies": "phi",
     "Pittsburgh Pirates": "pit",
+    "Pirates": "pit",
     "San Diego Padres": "sd",
+    "Padres": "sd",
     "San Francisco Giants": "sf",
     "Seattle Mariners": "sea",
+    "Mariners": "sea",
     "St. Louis Cardinals": "stl",
+    "Cardinals": "stl",
     "Tampa Bay Rays": "tb",
+    "Rays": "tb",
     "Texas Rangers": "tex",
     "Toronto Blue Jays": "tor",
+    "Blue Jays": "tor",
     "Washington Nationals": "wsh",
+    "Nationals": "wsh",
     // NHL - 32 teams
     "Anaheim Ducks": "ana",
+    "Ducks": "ana",
     "Arizona Coyotes": "ari",
+    "Coyotes": "ari",
     "Boston Bruins": "bos",
+    "Bruins": "bos",
     "Buffalo Sabres": "buf",
+    "Sabres": "buf",
     "Calgary Flames": "cgy",
+    "Flames": "cgy",
     "Carolina Hurricanes": "car",
+    "Hurricanes": "car",
     "Chicago Blackhawks": "chi",
+    "Blackhawks": "chi",
     "Colorado Avalanche": "col",
+    "Avalanche": "col",
     "Columbus Blue Jackets": "cbj",
+    "Blue Jackets": "cbj",
     "Dallas Stars": "dal",
+    "Stars": "dal",
     "Detroit Red Wings": "det",
+    "Red Wings": "det",
     "Edmonton Oilers": "edm",
+    "Oilers": "edm",
     "Florida Panthers": "fla",
+    "Panthers": "fla",
     "Los Angeles Kings": "la",
     "Minnesota Wild": "min",
+    "Wild": "min",
     "Montreal Canadiens": "mtl",
+    "Montréal Canadiens": "mtl",
+    "Canadiens": "mtl",
     "Nashville Predators": "nsh",
+    "Predators": "nsh",
     "New Jersey Devils": "nj",
+    "Devils": "nj",
     "New York Islanders": "nyi",
+    "Islanders": "nyi",
     "New York Rangers": "nyr",
     "Ottawa Senators": "ott",
+    "Senators": "ott",
     "Philadelphia Flyers": "phi",
+    "Flyers": "phi",
     "Pittsburgh Penguins": "pit",
+    "Penguins": "pit",
     "San Jose Sharks": "sj",
+    "Sharks": "sj",
     "Seattle Kraken": "sea",
+    "Kraken": "sea",
     "St. Louis Blues": "stl",
+    "Blues": "stl",
     "Tampa Bay Lightning": "tb",
+    "Lightning": "tb",
     "Toronto Maple Leafs": "tor",
+    "Maple Leafs": "tor",
     "Utah Hockey Club": "utah",
     "Vancouver Canucks": "van",
+    "Canucks": "van",
     "Vegas Golden Knights": "vgk",
+    "Golden Knights": "vgk",
     "Washington Capitals": "wsh",
-    "Winnipeg Jets": "wpg"
+    "Capitals": "wsh",
+    "Winnipeg Jets": "wpg",
+    "Jets": "wpg"
 };
 // ESPN CDN sport paths
 const SPORT_PATHS = {
@@ -602,430 +661,463 @@ const sports = [
         label: "NHL"
     }
 ];
-async function getLiveGames(sport) {
-    const res = await fetch(`/api/games?sport=${sport}`);
-    if (!res.ok) {
-        const error = await res.json();
-        throw new Error(error.error || "Failed to fetch");
-    }
-    return res.json();
-}
 function GamesSection() {
-    const [activeSport, setActiveSport] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])("all");
-    const [allGames, setAllGames] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])([]);
+    const [games, setGames] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])([]);
     const [loading, setLoading] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(true);
+    const [activeSport, setActiveSport] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])("all");
     (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useEffect"])(()=>{
-        async function loadAllGames() {
+        async function fetchGames() {
             try {
-                setLoading(true);
-                const [nba, mlb, nfl, nhl] = await Promise.all([
-                    getLiveGames("basketball_nba"),
-                    getLiveGames("baseball_mlb"),
-                    getLiveGames("americanfootball_nfl"),
-                    getLiveGames("icehockey_nhl")
-                ]);
-                const combined = [
-                    ...nba.map((g)=>({
-                            ...g,
-                            sportKey: "basketball_nba"
-                        })),
-                    ...mlb.map((g)=>({
-                            ...g,
-                            sportKey: "baseball_mlb"
-                        })),
-                    ...nfl.map((g)=>({
-                            ...g,
-                            sportKey: "americanfootball_nfl"
-                        })),
-                    ...nhl.map((g)=>({
-                            ...g,
-                            sportKey: "icehockey_nhl"
-                        }))
-                ];
-                const now = new Date();
-                const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-                const tomorrow = new Date(today);
-                tomorrow.setDate(tomorrow.getDate() + 1);
-                const todaysGames = combined.filter((game)=>{
-                    const gameDate = new Date(game.commence_time);
-                    return gameDate >= today && gameDate < tomorrow;
-                });
-                setAllGames(todaysGames);
+                const res = await fetch("/api/games");
+                const data = await res.json();
+                setGames(data);
             } catch (err) {
-                console.error("Error loading games:", err);
+                console.error("Failed to fetch games", err);
             } finally{
                 setLoading(false);
             }
         }
-        loadAllGames();
+        // Fetch immediately
+        fetchGames();
+        // Auto-refresh every 30 seconds
+        const interval = setInterval(fetchGames, 30000);
+        // Cleanup on unmount
+        return ()=>clearInterval(interval);
     }, []);
-    const filteredGames = activeSport === "all" ? allGames : allGames.filter((g)=>g.sportKey === activeSport);
+    const filteredGames = activeSport === "all" ? games : games.filter((g)=>g.sportKey === activeSport);
+    function formatTime(dateStr) {
+        const date = new Date(dateStr);
+        return date.toLocaleTimeString("en-US", {
+            hour: "numeric",
+            minute: "2-digit",
+            hour12: true
+        });
+    }
+    function isLive(statusCode) {
+        return statusCode === "STATUS_IN_PROGRESS";
+    }
+    function isFinal(statusCode) {
+        return statusCode === "STATUS_FINAL";
+    }
+    if (loading) {
+        return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+            className: "rounded-xl border border-zinc-800 bg-zinc-900/50 p-6",
+            children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                className: "flex items-center justify-center py-12",
+                children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                    className: "h-8 w-8 animate-spin rounded-full border-2 border-emerald-500 border-t-transparent"
+                }, void 0, false, {
+                    fileName: "[project]/src/app/components/GamesSection.tsx",
+                    lineNumber: 81,
+                    columnNumber: 11
+                }, this)
+            }, void 0, false, {
+                fileName: "[project]/src/app/components/GamesSection.tsx",
+                lineNumber: 80,
+                columnNumber: 9
+            }, this)
+        }, void 0, false, {
+            fileName: "[project]/src/app/components/GamesSection.tsx",
+            lineNumber: 79,
+            columnNumber: 7
+        }, this);
+    }
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-        className: "bg-zinc-900 border border-zinc-800 rounded-xl p-4 flex flex-col overflow-hidden h-full",
+        className: "rounded-xl border border-zinc-800 bg-zinc-900/50",
         children: [
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                className: "flex justify-between items-center mb-2",
+                className: "flex items-center justify-between border-b border-zinc-800 px-5 py-4",
                 children: [
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                         className: "flex items-center gap-3",
                         children: [
-                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
-                                className: "text-xs font-semibold text-zinc-400 uppercase tracking-wider",
-                                children: "games today"
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("h2", {
+                                className: "text-sm font-semibold uppercase tracking-wider text-zinc-400",
+                                children: "Games Today"
                             }, void 0, false, {
                                 fileName: "[project]/src/app/components/GamesSection.tsx",
-                                lineNumber: 74,
+                                lineNumber: 92,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                 className: "flex gap-1",
-                                children: sports.map((sport)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
-                                        onClick: ()=>setActiveSport(sport.key),
-                                        className: `text-[10px] px-2 py-1 rounded transition-colors ${activeSport === sport.key ? "bg-emerald-600 text-white" : "bg-zinc-800 text-zinc-400 hover:text-white"}`,
-                                        children: sport.label
-                                    }, sport.key, false, {
+                                children: sports.map((s)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
+                                        onClick: ()=>setActiveSport(s.key),
+                                        className: `rounded-md px-3 py-1 text-xs font-medium transition-colors ${activeSport === s.key ? "bg-emerald-500/20 text-emerald-400" : "text-zinc-500 hover:text-zinc-300"}`,
+                                        children: s.label
+                                    }, s.key, false, {
                                         fileName: "[project]/src/app/components/GamesSection.tsx",
-                                        lineNumber: 77,
+                                        lineNumber: 97,
                                         columnNumber: 15
                                     }, this))
                             }, void 0, false, {
                                 fileName: "[project]/src/app/components/GamesSection.tsx",
-                                lineNumber: 75,
+                                lineNumber: 95,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/app/components/GamesSection.tsx",
-                        lineNumber: 73,
+                        lineNumber: 91,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                        className: "text-[10px] text-zinc-600",
+                        className: "text-xs text-zinc-600",
                         children: [
                             filteredGames.length,
                             " games"
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/app/components/GamesSection.tsx",
-                        lineNumber: 91,
+                        lineNumber: 111,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/app/components/GamesSection.tsx",
-                lineNumber: 72,
+                lineNumber: 90,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                className: "flex-1 overflow-y-auto min-h-0 space-y-2",
-                children: loading ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                    className: "text-zinc-500 p-4",
-                    children: "Loading games..."
-                }, void 0, false, {
-                    fileName: "[project]/src/app/components/GamesSection.tsx",
-                    lineNumber: 96,
-                    columnNumber: 11
-                }, this) : filteredGames.length === 0 ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                    className: "text-zinc-500 p-4",
-                    children: "No games today"
-                }, void 0, false, {
-                    fileName: "[project]/src/app/components/GamesSection.tsx",
-                    lineNumber: 98,
-                    columnNumber: 11
-                }, this) : filteredGames.map((game)=>{
-                    const bookmaker = game.bookmakers?.[0];
-                    const h2h = bookmaker?.markets?.find((m)=>m.key === "h2h");
-                    const spreads = bookmaker?.markets?.find((m)=>m.key === "spreads");
-                    const totals = bookmaker?.markets?.find((m)=>m.key === "totals");
-                    const homeH2h = h2h?.outcomes?.find((o)=>o.name === game.home_team);
-                    const awayH2h = h2h?.outcomes?.find((o)=>o.name === game.away_team);
-                    const homeSpread = spreads?.outcomes?.find((o)=>o.name === game.home_team);
-                    const awaySpread = spreads?.outcomes?.find((o)=>o.name === game.away_team);
-                    const overTotal = totals?.outcomes?.find((o)=>o.name === "Over");
-                    const underTotal = totals?.outcomes?.find((o)=>o.name === "Under");
+                className: "divide-y divide-zinc-800",
+                children: filteredGames.map((game)=>{
                     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                        className: "bg-zinc-800/50 rounded-xl p-4 hover:bg-zinc-800 transition-colors border border-zinc-700/50",
+                        className: "p-5",
                         children: [
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                className: "flex justify-between items-center mb-3",
-                                children: [
-                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                                        className: "text-xs text-emerald-400 font-medium",
-                                        children: new Date(game.commence_time).toLocaleTimeString([], {
-                                            hour: '2-digit',
-                                            minute: '2-digit'
-                                        })
-                                    }, void 0, false, {
-                                        fileName: "[project]/src/app/components/GamesSection.tsx",
-                                        lineNumber: 118,
-                                        columnNumber: 19
-                                    }, this),
-                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                                        className: "text-xs text-emerald-500 font-bold",
-                                        children: sports.find((s)=>s.key === game.sportKey)?.label
-                                    }, void 0, false, {
-                                        fileName: "[project]/src/app/components/GamesSection.tsx",
-                                        lineNumber: 121,
-                                        columnNumber: 19
-                                    }, this)
-                                ]
-                            }, void 0, true, {
-                                fileName: "[project]/src/app/components/GamesSection.tsx",
-                                lineNumber: 117,
-                                columnNumber: 17
-                            }, this),
-                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                className: "grid grid-cols-[1fr_50px_50px_50px] gap-1 mb-2 text-xs text-zinc-500",
-                                children: [
-                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {}, void 0, false, {
-                                        fileName: "[project]/src/app/components/GamesSection.tsx",
-                                        lineNumber: 128,
-                                        columnNumber: 19
-                                    }, this),
-                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                        className: "text-center",
-                                        children: "Spread"
-                                    }, void 0, false, {
-                                        fileName: "[project]/src/app/components/GamesSection.tsx",
-                                        lineNumber: 129,
-                                        columnNumber: 19
-                                    }, this),
-                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                        className: "text-center",
-                                        children: "Total"
-                                    }, void 0, false, {
-                                        fileName: "[project]/src/app/components/GamesSection.tsx",
-                                        lineNumber: 130,
-                                        columnNumber: 19
-                                    }, this),
-                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                        className: "text-center",
-                                        children: "ML"
-                                    }, void 0, false, {
-                                        fileName: "[project]/src/app/components/GamesSection.tsx",
-                                        lineNumber: 131,
-                                        columnNumber: 19
-                                    }, this)
-                                ]
-                            }, void 0, true, {
-                                fileName: "[project]/src/app/components/GamesSection.tsx",
-                                lineNumber: 127,
-                                columnNumber: 17
-                            }, this),
-                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                className: "grid grid-cols-[1fr_50px_50px_50px] gap-1 items-center mb-2",
+                                className: "mb-3 flex items-center justify-between",
                                 children: [
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                         className: "flex items-center gap-2",
+                                        children: [
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                                className: "text-xs font-medium text-emerald-400",
+                                                children: formatTime(game.commence_time)
+                                            }, void 0, false, {
+                                                fileName: "[project]/src/app/components/GamesSection.tsx",
+                                                lineNumber: 124,
+                                                columnNumber: 19
+                                            }, this),
+                                            isLive(game.status_code) && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                                className: "text-[10px] bg-red-500/20 text-red-400 px-1.5 py-0.5 rounded animate-pulse",
+                                                children: "LIVE"
+                                            }, void 0, false, {
+                                                fileName: "[project]/src/app/components/GamesSection.tsx",
+                                                lineNumber: 128,
+                                                columnNumber: 21
+                                            }, this),
+                                            isFinal(game.status_code) && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                                className: "text-[10px] bg-zinc-700 text-zinc-400 px-1.5 py-0.5 rounded",
+                                                children: "FINAL"
+                                            }, void 0, false, {
+                                                fileName: "[project]/src/app/components/GamesSection.tsx",
+                                                lineNumber: 133,
+                                                columnNumber: 21
+                                            }, this)
+                                        ]
+                                    }, void 0, true, {
+                                        fileName: "[project]/src/app/components/GamesSection.tsx",
+                                        lineNumber: 123,
+                                        columnNumber: 17
+                                    }, this),
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                        className: "text-xs font-medium text-emerald-400",
+                                        children: sports.find((s)=>s.key === game.sportKey)?.label || "MLB"
+                                    }, void 0, false, {
+                                        fileName: "[project]/src/app/components/GamesSection.tsx",
+                                        lineNumber: 138,
+                                        columnNumber: 17
+                                    }, this)
+                                ]
+                            }, void 0, true, {
+                                fileName: "[project]/src/app/components/GamesSection.tsx",
+                                lineNumber: 122,
+                                columnNumber: 15
+                            }, this),
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                className: "mb-3 flex items-center gap-3",
+                                children: [
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                        className: "flex items-center gap-3 min-w-0 flex-1",
                                         children: [
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("img", {
                                                 src: (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$teamLogos$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["getTeamLogo"])(game.away_team, game.sportKey),
-                                                alt: "",
-                                                className: "w-5 h-5 object-contain",
+                                                alt: game.away_team,
+                                                className: "h-8 w-8 flex-shrink-0 object-contain",
                                                 onError: (e)=>{
-                                                    e.target.style.display = 'none';
+                                                    const target = e.target;
+                                                    target.src = "https://a.espncdn.com/i/teamlogos/default-team-logo-500.png";
                                                 }
-                                            }, void 0, false, {
-                                                fileName: "[project]/src/app/components/GamesSection.tsx",
-                                                lineNumber: 137,
-                                                columnNumber: 21
-                                            }, this),
-                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                                className: "text-white font-semibold text-sm",
-                                                children: game.away_team
-                                            }, void 0, false, {
-                                                fileName: "[project]/src/app/components/GamesSection.tsx",
-                                                lineNumber: 143,
-                                                columnNumber: 21
-                                            }, this)
-                                        ]
-                                    }, void 0, true, {
-                                        fileName: "[project]/src/app/components/GamesSection.tsx",
-                                        lineNumber: 136,
-                                        columnNumber: 19
-                                    }, this),
-                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
-                                        className: "px-1 py-1 rounded-lg bg-zinc-700 hover:bg-emerald-500/20 text-xs text-zinc-300 hover:text-emerald-400 transition-all text-center border border-zinc-600 hover:border-emerald-500/30",
-                                        children: [
-                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                                                className: "block",
-                                                children: awaySpread?.point > 0 ? `+${awaySpread.point}` : awaySpread?.point || "-"
-                                            }, void 0, false, {
-                                                fileName: "[project]/src/app/components/GamesSection.tsx",
-                                                lineNumber: 146,
-                                                columnNumber: 21
-                                            }, this),
-                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                                                className: "block text-zinc-500 text-[10px]",
-                                                children: awaySpread?.price || ""
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/components/GamesSection.tsx",
                                                 lineNumber: 147,
-                                                columnNumber: 21
-                                            }, this)
-                                        ]
-                                    }, void 0, true, {
-                                        fileName: "[project]/src/app/components/GamesSection.tsx",
-                                        lineNumber: 145,
-                                        columnNumber: 19
-                                    }, this),
-                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
-                                        className: "px-1 py-1 rounded-lg bg-zinc-700 hover:bg-emerald-500/20 text-xs text-zinc-300 hover:text-emerald-400 transition-all text-center border border-zinc-600 hover:border-emerald-500/30",
-                                        children: [
-                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                                                className: "block",
+                                                columnNumber: 19
+                                            }, this),
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                className: "flex items-center gap-2 min-w-0",
                                                 children: [
-                                                    "O",
-                                                    overTotal?.point || "-"
+                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                                        className: "truncate text-base font-semibold text-white",
+                                                        children: game.away_team
+                                                    }, void 0, false, {
+                                                        fileName: "[project]/src/app/components/GamesSection.tsx",
+                                                        lineNumber: 157,
+                                                        columnNumber: 21
+                                                    }, this),
+                                                    game.away_score !== undefined && game.away_score !== null && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                                        className: `text-lg font-bold ${isFinal(game.status_code) ? "text-zinc-400" : "text-emerald-400"}`,
+                                                        children: game.away_score
+                                                    }, void 0, false, {
+                                                        fileName: "[project]/src/app/components/GamesSection.tsx",
+                                                        lineNumber: 161,
+                                                        columnNumber: 23
+                                                    }, this)
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/src/app/components/GamesSection.tsx",
-                                                lineNumber: 150,
-                                                columnNumber: 21
-                                            }, this),
-                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                                                className: "block text-zinc-500 text-[10px]",
-                                                children: overTotal?.price || ""
-                                            }, void 0, false, {
-                                                fileName: "[project]/src/app/components/GamesSection.tsx",
-                                                lineNumber: 151,
-                                                columnNumber: 21
+                                                lineNumber: 156,
+                                                columnNumber: 19
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/app/components/GamesSection.tsx",
-                                        lineNumber: 149,
-                                        columnNumber: 19
+                                        lineNumber: 146,
+                                        columnNumber: 17
                                     }, this),
-                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
-                                        className: "px-1 py-1 rounded-lg bg-zinc-700 hover:bg-emerald-500/20 text-xs text-zinc-300 hover:text-emerald-400 transition-all text-center border border-zinc-600 hover:border-emerald-500/30",
-                                        children: awayH2h?.price > 0 ? `+${awayH2h.price}` : awayH2h?.price || "-"
-                                    }, void 0, false, {
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                        className: "flex items-center gap-2 flex-shrink-0",
+                                        children: [
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
+                                                className: "flex flex-col items-center justify-center rounded-lg bg-zinc-800 px-5 py-3 min-w-[90px]",
+                                                children: [
+                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                                        className: "text-base font-bold text-white",
+                                                        children: "-"
+                                                    }, void 0, false, {
+                                                        fileName: "[project]/src/app/components/GamesSection.tsx",
+                                                        lineNumber: 173,
+                                                        columnNumber: 21
+                                                    }, this),
+                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                                        className: "text-sm text-zinc-500",
+                                                        children: "-"
+                                                    }, void 0, false, {
+                                                        fileName: "[project]/src/app/components/GamesSection.tsx",
+                                                        lineNumber: 174,
+                                                        columnNumber: 21
+                                                    }, this)
+                                                ]
+                                            }, void 0, true, {
+                                                fileName: "[project]/src/app/components/GamesSection.tsx",
+                                                lineNumber: 172,
+                                                columnNumber: 19
+                                            }, this),
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
+                                                className: "flex flex-col items-center justify-center rounded-lg bg-zinc-800 px-5 py-3 min-w-[90px]",
+                                                children: [
+                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                                        className: "text-base font-bold text-white",
+                                                        children: "-"
+                                                    }, void 0, false, {
+                                                        fileName: "[project]/src/app/components/GamesSection.tsx",
+                                                        lineNumber: 177,
+                                                        columnNumber: 21
+                                                    }, this),
+                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                                        className: "text-sm text-zinc-500",
+                                                        children: "-"
+                                                    }, void 0, false, {
+                                                        fileName: "[project]/src/app/components/GamesSection.tsx",
+                                                        lineNumber: 178,
+                                                        columnNumber: 21
+                                                    }, this)
+                                                ]
+                                            }, void 0, true, {
+                                                fileName: "[project]/src/app/components/GamesSection.tsx",
+                                                lineNumber: 176,
+                                                columnNumber: 19
+                                            }, this),
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
+                                                className: "flex flex-col items-center justify-center rounded-lg bg-zinc-800 px-5 py-3 min-w-[90px]",
+                                                children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                                    className: "text-base font-bold text-white",
+                                                    children: "-"
+                                                }, void 0, false, {
+                                                    fileName: "[project]/src/app/components/GamesSection.tsx",
+                                                    lineNumber: 181,
+                                                    columnNumber: 21
+                                                }, this)
+                                            }, void 0, false, {
+                                                fileName: "[project]/src/app/components/GamesSection.tsx",
+                                                lineNumber: 180,
+                                                columnNumber: 19
+                                            }, this)
+                                        ]
+                                    }, void 0, true, {
                                         fileName: "[project]/src/app/components/GamesSection.tsx",
-                                        lineNumber: 153,
-                                        columnNumber: 19
+                                        lineNumber: 171,
+                                        columnNumber: 17
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/app/components/GamesSection.tsx",
-                                lineNumber: 135,
-                                columnNumber: 17
+                                lineNumber: 144,
+                                columnNumber: 15
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                className: "grid grid-cols-[1fr_50px_50px_50px] gap-1 items-center",
+                                className: "flex items-center gap-3",
                                 children: [
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                        className: "flex items-center gap-2",
+                                        className: "flex items-center gap-3 min-w-0 flex-1",
                                         children: [
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("img", {
                                                 src: (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$teamLogos$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["getTeamLogo"])(game.home_team, game.sportKey),
-                                                alt: "",
-                                                className: "w-5 h-5 object-contain",
+                                                alt: game.home_team,
+                                                className: "h-8 w-8 flex-shrink-0 object-contain",
                                                 onError: (e)=>{
-                                                    e.target.style.display = 'none';
+                                                    const target = e.target;
+                                                    target.src = "https://a.espncdn.com/i/teamlogos/default-team-logo-500.png";
                                                 }
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/components/GamesSection.tsx",
-                                                lineNumber: 161,
-                                                columnNumber: 21
+                                                lineNumber: 190,
+                                                columnNumber: 19
                                             }, this),
-                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                                className: "text-zinc-400 text-sm",
-                                                children: game.home_team
-                                            }, void 0, false, {
-                                                fileName: "[project]/src/app/components/GamesSection.tsx",
-                                                lineNumber: 167,
-                                                columnNumber: 21
-                                            }, this)
-                                        ]
-                                    }, void 0, true, {
-                                        fileName: "[project]/src/app/components/GamesSection.tsx",
-                                        lineNumber: 160,
-                                        columnNumber: 19
-                                    }, this),
-                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
-                                        className: "px-1 py-1 rounded-lg bg-zinc-700 hover:bg-emerald-500/20 text-xs text-zinc-300 hover:text-emerald-400 transition-all text-center border border-zinc-600 hover:border-emerald-500/30",
-                                        children: [
-                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                                                className: "block",
-                                                children: homeSpread?.point > 0 ? `+${homeSpread.point}` : homeSpread?.point || "-"
-                                            }, void 0, false, {
-                                                fileName: "[project]/src/app/components/GamesSection.tsx",
-                                                lineNumber: 170,
-                                                columnNumber: 21
-                                            }, this),
-                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                                                className: "block text-zinc-500 text-[10px]",
-                                                children: homeSpread?.price || ""
-                                            }, void 0, false, {
-                                                fileName: "[project]/src/app/components/GamesSection.tsx",
-                                                lineNumber: 171,
-                                                columnNumber: 21
-                                            }, this)
-                                        ]
-                                    }, void 0, true, {
-                                        fileName: "[project]/src/app/components/GamesSection.tsx",
-                                        lineNumber: 169,
-                                        columnNumber: 19
-                                    }, this),
-                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
-                                        className: "px-1 py-1 rounded-lg bg-zinc-700 hover:bg-emerald-500/20 text-xs text-zinc-300 hover:text-emerald-400 transition-all text-center border border-zinc-600 hover:border-emerald-500/30",
-                                        children: [
-                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                                                className: "block",
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                className: "flex items-center gap-2 min-w-0",
                                                 children: [
-                                                    "U",
-                                                    underTotal?.point || "-"
+                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                                        className: "truncate text-base font-semibold text-zinc-400",
+                                                        children: game.home_team
+                                                    }, void 0, false, {
+                                                        fileName: "[project]/src/app/components/GamesSection.tsx",
+                                                        lineNumber: 200,
+                                                        columnNumber: 21
+                                                    }, this),
+                                                    game.home_score !== undefined && game.home_score !== null && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                                        className: `text-lg font-bold ${isFinal(game.status_code) ? "text-zinc-400" : "text-emerald-400"}`,
+                                                        children: game.home_score
+                                                    }, void 0, false, {
+                                                        fileName: "[project]/src/app/components/GamesSection.tsx",
+                                                        lineNumber: 204,
+                                                        columnNumber: 23
+                                                    }, this)
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/src/app/components/GamesSection.tsx",
-                                                lineNumber: 174,
-                                                columnNumber: 21
-                                            }, this),
-                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                                                className: "block text-zinc-500 text-[10px]",
-                                                children: underTotal?.price || ""
-                                            }, void 0, false, {
-                                                fileName: "[project]/src/app/components/GamesSection.tsx",
-                                                lineNumber: 175,
-                                                columnNumber: 21
+                                                lineNumber: 199,
+                                                columnNumber: 19
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/app/components/GamesSection.tsx",
-                                        lineNumber: 173,
-                                        columnNumber: 19
+                                        lineNumber: 189,
+                                        columnNumber: 17
                                     }, this),
-                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
-                                        className: "px-1 py-1 rounded-lg bg-zinc-700 hover:bg-emerald-500/20 text-xs text-zinc-300 hover:text-emerald-400 transition-all text-center border border-zinc-600 hover:border-emerald-500/30",
-                                        children: homeH2h?.price > 0 ? `+${homeH2h.price}` : homeH2h?.price || "-"
-                                    }, void 0, false, {
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                        className: "flex items-center gap-2 flex-shrink-0",
+                                        children: [
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
+                                                className: "flex flex-col items-center justify-center rounded-lg bg-zinc-800 px-5 py-3 min-w-[90px]",
+                                                children: [
+                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                                        className: "text-base font-bold text-white",
+                                                        children: "-"
+                                                    }, void 0, false, {
+                                                        fileName: "[project]/src/app/components/GamesSection.tsx",
+                                                        lineNumber: 216,
+                                                        columnNumber: 21
+                                                    }, this),
+                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                                        className: "text-sm text-zinc-500",
+                                                        children: "-"
+                                                    }, void 0, false, {
+                                                        fileName: "[project]/src/app/components/GamesSection.tsx",
+                                                        lineNumber: 217,
+                                                        columnNumber: 21
+                                                    }, this)
+                                                ]
+                                            }, void 0, true, {
+                                                fileName: "[project]/src/app/components/GamesSection.tsx",
+                                                lineNumber: 215,
+                                                columnNumber: 19
+                                            }, this),
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
+                                                className: "flex flex-col items-center justify-center rounded-lg bg-zinc-800 px-5 py-3 min-w-[90px]",
+                                                children: [
+                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                                        className: "text-base font-bold text-white",
+                                                        children: "-"
+                                                    }, void 0, false, {
+                                                        fileName: "[project]/src/app/components/GamesSection.tsx",
+                                                        lineNumber: 220,
+                                                        columnNumber: 21
+                                                    }, this),
+                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                                        className: "text-sm text-zinc-500",
+                                                        children: "-"
+                                                    }, void 0, false, {
+                                                        fileName: "[project]/src/app/components/GamesSection.tsx",
+                                                        lineNumber: 221,
+                                                        columnNumber: 21
+                                                    }, this)
+                                                ]
+                                            }, void 0, true, {
+                                                fileName: "[project]/src/app/components/GamesSection.tsx",
+                                                lineNumber: 219,
+                                                columnNumber: 19
+                                            }, this),
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
+                                                className: "flex flex-col items-center justify-center rounded-lg bg-zinc-800 px-5 py-3 min-w-[90px]",
+                                                children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                                    className: "text-base font-bold text-white",
+                                                    children: "-"
+                                                }, void 0, false, {
+                                                    fileName: "[project]/src/app/components/GamesSection.tsx",
+                                                    lineNumber: 224,
+                                                    columnNumber: 21
+                                                }, this)
+                                            }, void 0, false, {
+                                                fileName: "[project]/src/app/components/GamesSection.tsx",
+                                                lineNumber: 223,
+                                                columnNumber: 19
+                                            }, this)
+                                        ]
+                                    }, void 0, true, {
                                         fileName: "[project]/src/app/components/GamesSection.tsx",
-                                        lineNumber: 177,
-                                        columnNumber: 19
+                                        lineNumber: 214,
+                                        columnNumber: 17
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/app/components/GamesSection.tsx",
-                                lineNumber: 159,
-                                columnNumber: 17
+                                lineNumber: 187,
+                                columnNumber: 15
                             }, this)
                         ]
                     }, game.id, true, {
                         fileName: "[project]/src/app/components/GamesSection.tsx",
-                        lineNumber: 116,
-                        columnNumber: 15
+                        lineNumber: 120,
+                        columnNumber: 13
                     }, this);
                 })
             }, void 0, false, {
                 fileName: "[project]/src/app/components/GamesSection.tsx",
-                lineNumber: 94,
+                lineNumber: 117,
                 columnNumber: 7
+            }, this),
+            filteredGames.length === 0 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                className: "py-12 text-center text-zinc-500",
+                children: "No games found for this sport."
+            }, void 0, false, {
+                fileName: "[project]/src/app/components/GamesSection.tsx",
+                lineNumber: 234,
+                columnNumber: 9
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/src/app/components/GamesSection.tsx",
-        lineNumber: 71,
+        lineNumber: 88,
         columnNumber: 5
     }, this);
 }
